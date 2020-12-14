@@ -1,8 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+const BUSSTOP_URL = "https://arrivelah2.busrouter.sg/?id=43009";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+
+  function loadBusStopData() {
+    fetch(BUSSTOP_URL)
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseDData) => {
+        console.log(responseDData);
+      });
+  }
+
+  // This happened once
+  useEffect(() => {
+    loadBusStopData();
+  }, []);
 
  return (
    <View style={styles.container}>
