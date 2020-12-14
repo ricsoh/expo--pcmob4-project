@@ -19,7 +19,6 @@ export default function App() {
         return response.json();
       })
       .then((responseData) => {
-        console.log("Bus numer:" + busNumber); // display data at console
         const myBus = responseData.services.filter(
           (item) => item.no === busNumber
         )[0];
@@ -36,8 +35,18 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Return formatted date
+  function dateConvert(time) {
+    const day = new Date(time);
+    let [hour, minute, second] = day.toLocaleTimeString("en-US").split(":");
+    const timeArranged = `${hour}:${minute}:${second}`
+    
+    return timeArranged;
+  }
+
   function refreshPressed() {
-    alert("Refresh pressed");
+//    alert("Refresh pressed");
+    loadBusStopData();
   }
 
  return (
@@ -48,7 +57,7 @@ export default function App() {
     <Text style={styles.arrivalInfo}>{busNumber}</Text>
     <Text style={styles.title}>Bus arrival time</Text>
     <Text style={styles.arrivalInfo}>
-      {loading ? <ActivityIndicator size="large" color="blue"/> : arrival}
+      {loading ? <ActivityIndicator size="large" color="blue"/> : dateConvert(arrival)}
     </Text>
     <TouchableOpacity style={styles.button} onPress={() => refreshPressed()}>
       <Text style={styles.buttonText}>Refresh!</Text>
