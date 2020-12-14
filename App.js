@@ -10,6 +10,9 @@ export default function App() {
 
   // This will retrive data using API
   function loadBusStopData() {
+    // Turn on the loading indicator each time
+    setLoading(true);
+
     fetch(BUSSTOP_URL)
       .then((response) => {
         return response.json();
@@ -29,8 +32,15 @@ export default function App() {
 
   // This happened once
   useEffect(() => {
-    loadBusStopData();
+    const interval = setInterval(loadBusStopData, 1000);
+
+    // Return the function to run when unmouting
+    return () => clearInterval(interval);
   }, []);
+
+  function refreshPressed() {
+    alert("Refresh pressed");
+  }
 
  return (
    <View style={styles.container}>
@@ -38,7 +48,7 @@ export default function App() {
       <Text style={styles.arrivalTime}>
         {loading ? <ActivityIndicator size="large" color="blue"/> : arrival}
       </Text>
-     <TouchableOpacity style={styles.button}>
+     <TouchableOpacity style={styles.button} onPress={() => refreshPressed()}>
        <Text style={styles.buttonText}>Refresh!</Text>
      </TouchableOpacity>
    </View>
